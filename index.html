@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Calendarios Deportivos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/tablas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-calendar-alt"></i> Planificador de Calendarios Deportivos</h1>
+            <p class="subtitle">Generación óptima de calendarios para torneos todos contra todos</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#inicio" class="active"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="#cargar-datos"><i class="fas fa-file-upload"></i> Cargar Datos</a></li>
+                <li><a href="#ejecutar-algoritmo"><i class="fas fa-play-circle"></i> Ejecutar</a></li>
+                <li><a href="#resultados"><i class="fas fa-chart-bar"></i> Resultados</a></li>
+                <li><a href="analisis.html"><i class="fas fa-chart-line"></i> Análisis</a></li>
+                <li><a href="informe.html"><i class="fas fa-file-pdf"></i> Informe</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container">
+        <!-- Sección 1: Cargar Datos -->
+        <section id="cargar-datos" class="card">
+            <h2><i class="fas fa-file-import"></i> Cargar Datos de Entrada</h2>
+            
+            <div class="card-content">
+                <!-- Opción 1: Subir archivo -->
+                <div class="upload-section">
+                    <h3>1. Importar Archivo .txt</h3>
+                    <p class="description">Selecciona un archivo con el formato especificado en la sección 7.1 del documento</p>
+                    
+                    <div class="file-upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <p>Arrastra y suelta tu archivo aquí o</p>
+                        <button id="selectFileBtn" class="btn btn-primary">
+                            <i class="fas fa-folder-open"></i> Seleccionar Archivo
+                        </button>
+                        <input type="file" id="fileInput" accept=".txt" hidden>
+                        <p class="file-info">Formato: n, Min, Max, Matriz D[n×n]</p>
+                    </div>
+                    
+                    <div id="fileInfo" class="file-info-card" style="display: none;">
+                        <div class="file-info-header">
+                            <i class="fas fa-file-alt"></i>
+                            <h4>Archivo Cargado</h4>
+                            <span class="file-status success"><i class="fas fa-check-circle"></i> Válido</span>
+                        </div>
+                        <div class="file-details">
+                            <p><strong>Nombre:</strong> <span id="fileName">-</span></p>
+                            <p><strong>Equipos:</strong> <span id="fileTeams">-</span></p>
+                            <p><strong>Streak Min:</strong> <span id="fileMin">-</span></p>
+                            <p><strong>Streak Max:</strong> <span id="fileMax">-</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Opción 2: Datos de ejemplo -->
+                <div class="example-section">
+                    <h3>2. Usar Datos de Ejemplo</h3>
+                    <p class="description">Prueba el sistema con ejemplos predefinidos</p>
+                    
+                    <div class="example-buttons">
+                        <button class="btn btn-secondary" data-example="4">
+                            <i class="fas fa-basketball-ball"></i> Ejemplo 4 Equipos
+                        </button>
+                        <button class="btn btn-secondary" data-example="6">
+                            <i class="fas fa-futbol"></i> Ejemplo 6 Equipos
+                        </button>
+                        <button class="btn btn-secondary" data-example="8">
+                            <i class="fas fa-baseball-ball"></i> Ejemplo 8 Equipos
+                        </button>
+                        <button class="btn btn-secondary" data-example="random">
+                            <i class="fas fa-random"></i> Datos Aleatorios
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Vista previa de matriz -->
+                <div class="matrix-preview">
+                    <h3>Vista Previa de Matriz de Distancias</h3>
+                    <div class="matrix-container">
+                        <div id="matrixPreview" class="matrix">
+                            <!-- Matriz se generará dinámicamente -->
+                            <p class="empty-matrix">No hay datos cargados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Selección de Algoritmo -->
+        <section id="ejecutar-algoritmo" class="card">
+            <h2><i class="fas fa-cogs"></i> Selección de Algoritmo</h2>
+            
+            <div class="card-content">
+                <div class="algorithm-selection">
+                    <div class="algorithm-card selected" data-algorithm="constructivo">
+                        <div class="algorithm-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Algoritmo Constructivo</h4>
+                        <p>Genera solución inicial rápida usando heurísticas voraces</p>
+                        <div class="algorithm-stats">
+                            <span><i class="fas fa-clock"></i> Rápido</span>
+                            <span><i class="fas fa-memory"></i> Bajo uso</span>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card" data-algorithm="busqueda-local">
+                        <div class="algorithm-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h4>Búsqueda Local</h4>
+                        <p>Mejora soluciones existentes mediante vecindarios</p>
+                        <div class="algorithm-stats">
+                            <span><i class="fas fa-clock"></i> Medio</span>
+                            <span><i class="fas fa-memory"></i> Medio uso</span>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card" data-algorithm="combinado">
+                        <div class="algorithm-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h4>Combinado</h4>
+                        <p>Combina constructivo con búsqueda para mejor calidad</p>
+                        <div class="algorithm-stats">
+                            <span><i class="fas fa-clock"></i> Lento</span>
+                            <span><i class="fas fa-memory"></i> Alto uso</span>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card" data-algorithm="fuerza-bruta">
+                        <div class="algorithm-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>Fuerza Bruta</h4>
+                        <p>Solución óptima garantizada (solo n ≤ 4)</p>
+                        <div class="algorithm-stats">
+                            <span><i class="fas fa-clock"></i> Muy lento</span>
+                            <span><i class="fas fa-memory"></i> Alto uso</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controles de ejecución -->
+                <div class="execution-controls">
+                    <div class="control-group">
+                        <label for="iterations">Iteraciones:</label>
+                        <input type="number" id="iterations" min="1" max="10000" value="1000">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="timeout">Timeout (s):</label>
+                        <input type="number" id="timeout" min="1" max="300" value="30">
+                    </div>
+                    
+                    <button id="executeBtn" class="btn btn-success btn-large" disabled>
+                        <i class="fas fa-play"></i> Ejecutar Algoritmo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: Resultados en Tiempo Real -->
+        <section id="resultados" class="card">
+            <h2><i class="fas fa-chart-line"></i> Resultados y Visualización</h2>
+            
+            <div class="card-content">
+                <!-- Estadísticas de ejecución -->
+                <div class="execution-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Tiempo de Ejecución</h5>
+                            <p id="executionTime">0.00 s</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Costo Total</h5>
+                            <p id="totalCost">0.00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Estado</h5>
+                            <p id="executionStatus" class="status-pending">Sin ejecutar</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Memoria Usada</h5>
+                            <p id="memoryUsed">0 MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pestañas de resultados -->
+                <div class="results-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="calendar">Calendario</button>
+                        <button class="tab-btn" data-tab="giras">Giras</button>
+                        <button class="tab-btn" data-tab="verification">Verificación</button>
+                        <button class="tab-btn" data-tab="charts">Gráficos</button>
+                    </div>
+                    
+                    <div class="tabs-content">
+                        <!-- Pestaña 1: Calendario -->
+                        <div id="tab-calendar" class="tab-pane active">
+                            <div class="calendar-controls">
+                                <button id="prevDate" class="btn btn-sm"><i class="fas fa-chevron-left"></i></button>
+                                <span id="currentDate">Fecha 1 de 6</span>
+                                <button id="nextDate" class="btn btn-sm"><i class="fas fa-chevron-right"></i></button>
+                                <button id="exportCalendar" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download"></i> Exportar
+                                </button>
+                            </div>
+                            
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Calendario se generará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Pestaña 2: Giras -->
+                        <div id="tab-giras" class="tab-pane">
+                            <div class="giras-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Equipo</th>
+                                            <th>Giras</th>
+                                            <th>Costo</th>
+                                            <th>Detalles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="girasTable">
+                                        <!-- Datos de giras -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Pestaña 3: Verificación -->
+                        <div id="tab-verification" class="tab-pane">
+                            <div class="verification-results">
+                                <div class="verification-item success">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <h5>Calendario Básico</h5>
+                                        <p>Estructura válida del calendario</p>
+                                    </div>
+                                </div>
+                                <div class="verification-item success">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <h5>Restricción Ida-Vuelta</h5>
+                                        <p>Cumple con el orden de partidos</p>
+                                    </div>
+                                </div>
+                                <div class="verification-item warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div>
+                                        <h5>Restricciones Streak</h5>
+                                        <p>Algunos streaks fuera de límites</p>
+                                    </div>
+                                </div>
+                                <div class="verification-item success">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <h5>Sin Partidos Consecutivos</h5>
+                                        <p>No hay repeticiones inmediatas</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pestaña 4: Gráficos -->
+                        <div id="tab-charts" class="tab-pane">
+                            <div class="charts-container">
+                                <div class="chart-wrapper">
+                                    <canvas id="costChart"></canvas>
+                                    <p class="chart-title">Distribución de Costos por Equipo</p>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="timeChart"></canvas>
+                                    <p class="chart-title">Tiempo por Algoritmo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Proyecto de Algoritmos y Estructuras de Datos - Planificación de Calendarios Deportivos</p>
+            <p>Entrega: 15 de diciembre de 2025</p>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#"><i class="fas fa-file-pdf"></i> Documentación</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/calendario.js"></script>
+    <script src="js/algoritmo.js"></script>
+    <script src="js/archivos.js"></script>
+    <script src="js/visualizacion.js"></script>
+    <script src="js/interfaz.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

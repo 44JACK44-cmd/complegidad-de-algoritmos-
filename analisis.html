@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Algoritmos - Planificador de Calendarios</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/tablas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-chart-line"></i> Análisis de Algoritmos</h1>
+            <p class="subtitle">Comparación de rendimiento y eficiencia</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="#complejidad"><i class="fas fa-calculator"></i> Complejidad</a></li>
+                <li><a href="#rendimiento"><i class="fas fa-tachometer-alt"></i> Rendimiento</a></li>
+                <li><a href="#calidad"><i class="fas fa-award"></i> Calidad</a></li>
+                <li><a href="#conclusiones"><i class="fas fa-clipboard-check"></i> Conclusiones</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container">
+        <!-- Sección: Análisis de Complejidad -->
+        <section id="complejidad" class="card">
+            <h2><i class="fas fa-calculator"></i> Análisis de Complejidad</h2>
+            
+            <div class="card-content">
+                <div class="complexity-grid">
+                    <!-- Algoritmo Constructivo -->
+                    <div class="complexity-card">
+                        <h3><i class="fas fa-bolt"></i> Constructivo</h3>
+                        <div class="complexity-details">
+                            <div class="complexity-item">
+                                <span class="complexity-label">Tiempo:</span>
+                                <span class="complexity-value">O(n³)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Espacio:</span>
+                                <span class="complexity-value">O(n²)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Ventajas:</span>
+                                <ul>
+                                    <li>Rápida ejecución</li>
+                                    <li>Bajo consumo de memoria</li>
+                                    <li>Genera solución inicial</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Búsqueda Local -->
+                    <div class="complexity-card">
+                        <h3><i class="fas fa-search"></i> Búsqueda Local</h3>
+                        <div class="complexity-details">
+                            <div class="complexity-item">
+                                <span class="complexity-label">Tiempo:</span>
+                                <span class="complexity-value">O(k × n²)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Espacio:</span>
+                                <span class="complexity-value">O(n²)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Ventajas:</span>
+                                <ul>
+                                    <li>Mejora soluciones existentes</li>
+                                    <li>Control de calidad</li>
+                                    <li>Escapatoria de óptimos locales</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Algoritmo Combinado -->
+                    <div class="complexity-card">
+                        <h3><i class="fas fa-layer-group"></i> Combinado</h3>
+                        <div class="complexity-details">
+                            <div class="complexity-item">
+                                <span class="complexity-label">Tiempo:</span>
+                                <span class="complexity-value">O(n³ + k × n²)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Espacio:</span>
+                                <span class="complexity-value">O(n²)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Ventajas:</span>
+                                <ul>
+                                    <li>Mejor calidad de solución</li>
+                                    <li>Balance tiempo-calidad</li>
+                                    <li>Robusto para diferentes n</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fuerza Bruta -->
+                    <div class="complexity-card">
+                        <h3><i class="fas fa-cogs"></i> Fuerza Bruta</h3>
+                        <div class="complexity-details">
+                            <div class="complexity-item">
+                                <span class="complexity-label">Tiempo:</span>
+                                <span class="complexity-value">O((n-1)!)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Espacio:</span>
+                                <span class="complexity-value">O(n!)</span>
+                            </div>
+                            <div class="complexity-item">
+                                <span class="complexity-label">Limitaciones:</span>
+                                <ul>
+                                    <li>Solo para n ≤ 4</li>
+                                    <li>Explosión combinatoria</li>
+                                    <li>Impráctico para n grandes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Análisis de Rendimiento -->
+        <section id="rendimiento" class="card">
+            <h2><i class="fas fa-tachometer-alt"></i> Análisis de Rendimiento</h2>
+            
+            <div class="card-content">
+                <div class="performance-charts">
+                    <div class="chart-container">
+                        <canvas id="timeChart"></canvas>
+                        <p class="chart-title">Tiempo de Ejecución por Algoritmo</p>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="memoryChart"></canvas>
+                        <p class="chart-title">Uso de Memoria por Algoritmo</p>
+                    </div>
+                </div>
+
+                <!-- Tabla de resultados -->
+                <div class="performance-table">
+                    <h3>Resultados Experimentales (n=8)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Algoritmo</th>
+                                <th>Tiempo (s)</th>
+                                <th>Memoria (MB)</th>
+                                <th>Costo Promedio</th>
+                                <th>Iteraciones</th>
+                                <th>Éxito (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="performanceData">
+                            <!-- Los datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Análisis de Calidad -->
+        <section id="calidad" class="card">
+            <h2><i class="fas fa-award"></i> Análisis de Calidad de Soluciones</h2>
+            
+            <div class="card-content">
+                <div class="quality-metrics">
+                    <!-- Métrica 1: Cercanía al óptimo -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Cercanía al Óptimo</h3>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-bar">
+                                <div class="bar-label">Constructivo</div>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 75%">75%</div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="bar-label">Búsqueda Local</div>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 85%">85%</div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="bar-label">Combinado</div>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 92%">92%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métrica 2: Consistencia -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Consistencia</h3>
+                        </div>
+                        <div class="metric-body">
+                            <div class="consistency-chart">
+                                <canvas id="consistencyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métrica 3: Satisfacción de Restricciones -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Satisfacción de Restricciones</h3>
+                        </div>
+                        <div class="metric-body">
+                            <table class="constraints-table">
+                                <thead>
+                                    <tr>
+                                        <th>Restricción</th>
+                                        <th>Constructivo</th>
+                                        <th>Búsqueda Local</th>
+                                        <th>Combinado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Streaks válidos</td>
+                                        <td><span class="badge success">85%</span></td>
+                                        <td><span class="badge success">95%</span></td>
+                                        <td><span class="badge success">98%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ida-vuelta correcto</td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sin repeticiones</td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Estructura válida</td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                        <td><span class="badge success">100%</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Conclusiones -->
+        <section id="conclusiones" class="card">
+            <h2><i class="fas fa-clipboard-check"></i> Conclusiones y Recomendaciones</h2>
+            
+            <div class="card-content">
+                <div class="conclusions-grid">
+                    <!-- Conclusión 1 -->
+                    <div class="conclusion-card">
+                        <div class="conclusion-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Mejor Algoritmo General</h3>
+                        <p>El algoritmo <strong>Combinado</strong> ofrece el mejor balance entre tiempo de ejecución y calidad de solución para la mayoría de los casos.</p>
+                        <ul>
+                            <li>Excelente para n = 4-12</li>
+                            <li>Alta tasa de éxito (92%)</li>
+                            <li>Tiempo aceptable hasta n=16</li>
+                        </ul>
+                    </div>
+
+                    <!-- Conclusión 2 -->
+                    <div class="conclusion-card">
+                        <div class="conclusion-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Para Resultados Rápidos</h3>
+                        <p>El algoritmo <strong>Constructivo</strong> es ideal cuando se necesita una solución rápida, aunque con menor calidad.</p>
+                        <ul>
+                            <li>Muy rápido (O(n³))</li>
+                            <li>Buen punto de partida</li>
+                            <li>Adecuado para n grandes</li>
+                        </ul>
+                    </div>
+
+                    <!-- Conclusión 3 -->
+                    <div class="conclusion-card">
+                        <div class="conclusion-icon">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                        <h3>Para Máxima Calidad</h3>
+                        <p>Cuando la calidad es prioritaria, usar <strong>Búsqueda Local</strong> con muchas iteraciones o el algoritmo <strong>Combinado</strong>.</p>
+                        <ul>
+                            <li>Mejora continua</li>
+                            <li>Escapa óptimos locales</li>
+                            <li>Control preciso de parámetros</li>
+                        </ul>
+                    </div>
+
+                    <!-- Conclusión 4 -->
+                    <div class="conclusion-card">
+                        <div class="conclusion-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Limitaciones y Consideraciones</h3>
+                        <p>El algoritmo de <strong>Fuerza Bruta</strong> solo es viable para n ≤ 4 debido a la explosión combinatoria.</p>
+                        <ul>
+                            <li>n máximo práctico: 4</li>
+                            <li>Útil solo para verificación</li>
+                            <li>Base para comparación</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Recomendaciones finales -->
+                <div class="recommendations">
+                    <h3><i class="fas fa-star"></i> Recomendaciones de Uso</h3>
+                    
+                    <div class="recommendation-table">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Tamaño (n)</th>
+                                    <th>Algoritmo Recomendado</th>
+                                    <th>Iteraciones Sugeridas</th>
+                                    <th>Tiempo Estimado</th>
+                                    <th>Calidad Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>4</td>
+                                    <td><strong>Fuerza Bruta</strong> o Combinado</td>
+                                    <td>- / 500</td>
+                                    <td>10s / 15s</td>
+                                    <td>100% / 98%</td>
+                                </tr>
+                                <tr>
+                                    <td>6-8</td>
+                                    <td><strong>Combinado</strong></td>
+                                    <td>500-1000</td>
+                                    <td>30-60s</td>
+                                    <td>92-95%</td>
+                                </tr>
+                                <tr>
+                                    <td>10-12</td>
+                                    <td><strong>Constructivo</strong> + Búsqueda Local</td>
+                                    <td>1000+</td>
+                                    <td>1-2min</td>
+                                    <td>85-90%</td>
+                                </tr>
+                                <tr>
+                                    <td>14+</td>
+                                    <td><strong>Constructivo</strong></td>
+                                    <td>1</td>
+                                    <td>&lt; 30s</td>
+                                    <td>75-80%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Proyecto de Algoritmos y Estructuras de Datos - Análisis Comparativo de Algoritmos</p>
+            <p>Entrega: 15 de diciembre de 2025</p>
+            <div class="footer-links">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Volver al Planificador</a>
+                <a href="informe.html"><i class="fas fa-file-pdf"></i> Ver Informe Completo</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/visualizacion.js"></script>
+    <script src="js/analisis.js"></script>
+</body>
+</html>
