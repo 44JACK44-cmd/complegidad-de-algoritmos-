@@ -14,11 +14,11 @@ class VisualizadorCalendario {
         this.charts.costos = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: datos.labels,
+                labels: datos.labels || [],
                 datasets: [{
                     label: 'Costo por Equipo',
-                    data: datos.valores,
-                    backgroundColor: this.generarColores(datos.valores.length),
+                    data: datos.valores || [],
+                    backgroundColor: this.generarColores(datos.valores?.length || 0),
                     borderColor: '#2c3e50',
                     borderWidth: 1
                 }]
@@ -62,17 +62,26 @@ class VisualizadorCalendario {
             this.charts.comparativo.destroy();
         }
         
+        const labels = ['Tiempo', 'Costo', 'Calidad', 'Memoria', 'Consistencia'];
+        const datasets = datos.map((algo, index) => ({
+            label: algo.nombre,
+            data: [
+                Math.min(algo.tiempo || 0, 100),
+                Math.min(algo.costo || 0, 100),
+                Math.min(algo.calidad || 0, 100),
+                Math.min(algo.memoria || 0, 100),
+                Math.min(algo.consistencia || 0, 100)
+            ],
+            backgroundColor: this.generarColorTransparente(index),
+            borderColor: this.generarColor(index),
+            borderWidth: 2
+        }));
+        
         this.charts.comparativo = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Tiempo', 'Costo', 'Calidad', 'Memoria', 'Consistencia'],
-                datasets: datos.map((algo, index) => ({
-                    label: algo.nombre,
-                    data: [algo.tiempo, algo.costo, algo.calidad, algo.memoria, algo.consistencia],
-                    backgroundColor: this.generarColorTransparente(index),
-                    borderColor: this.generarColor(index),
-                    borderWidth: 2
-                }))
+                labels: labels,
+                datasets: datasets
             },
             options: {
                 responsive: true,
@@ -86,35 +95,17 @@ class VisualizadorCalendario {
         });
     }
     
-    // Generar colores para gráficos
-    generarColores(n) {
-        const colores = [];
-        const hueStep = 360 / n;
-        
-        for (let i = 0; i < n; i++) {
-            const hue = i * hueStep;
-            colores.push(`hsl(${hue}, 70%, 60%)`);
-        }
-        
-        return colores;
-    }
-    
-    generarColor(index) {
-        const colores = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6'];
-        return colores[index % colores.length];
-    }
-    
-    generarColorTransparente(index) {
-        const color = this.generarColor(index);
-        return color.replace('rgb', 'rgba').replace(')', ', 0.2)');
-    }
-    
     // Visualizar matriz de distancias
     visualizarMatriz(containerId, matriz) {
         const container = document.getElementById(containerId);
         if (!container) return;
         
         container.innerHTML = '';
+        
+        if (!matriz || matriz.length === 0) {
+            container.innerHTML = '<p class="empty-matrix">No hay datos</p>';
+            return;
+        }
         
         const table = document.createElement('table');
         table.className = 'matrix-visualization';
@@ -124,7 +115,8 @@ class VisualizadorCalendario {
         const headerRow = document.createElement('tr');
         headerRow.appendChild(document.createElement('th')); // Celda vacía
         
-        for (let j = 0; j < matriz[0].length; j++) {
+        const n = matriz.length;
+        for (let j = 0; j < n; j++) {
             const th = document.createElement('th');
             th.textContent = `Eq ${j + 1}`;
             headerRow.appendChild(th);
@@ -136,7 +128,7 @@ class VisualizadorCalendario {
         // Cuerpo
         const tbody = document.createElement('tbody');
         
-        for (let i = 0; i < matriz.length; i++) {
+        for (let i = 0; i < n; i++) {
             const row = document.createElement('tr');
             
             // Encabezado de fila
@@ -145,7 +137,7 @@ class VisualizadorCalendario {
             row.appendChild(rowHeader);
             
             // Valores
-            for (let j = 0; j < matriz[i].length; j++) {
+            for (let j = 0; j < n; j++) {
                 const cell = document.createElement('td');
                 cell.textContent = matriz[i][j];
                 
@@ -156,8 +148,10 @@ class VisualizadorCalendario {
                 
                 // Color por valor
                 const maxVal = Math.max(...matriz.flat());
-                const opacity = matriz[i][j] / maxVal;
-                cell.style.backgroundColor = `rgba(52, 152, 219, ${0.2 + opacity * 0.6})`;
+                if (maxVal > 0) {
+                    const opacity = matriz[i][j] / maxVal;
+                    cell.style.backgroundColor = `rgba(52, 152, 219, ${0.2 + opacity * 0.6})`;
+                }
                 
                 row.appendChild(cell);
             }
@@ -175,6 +169,11 @@ class VisualizadorCalendario {
         if (!container) return;
         
         container.innerHTML = '';
+        
+        if (!calendario || calendario.length === 0) {
+            container.innerHTML = '<p class="empty-matrix">No hay calendario</p>';
+            return;
+        }
         
         const n = calendario[0].length;
         const numFechas = calendario.length;
@@ -239,6 +238,10 @@ class VisualizadorCalendario {
             this.charts.evolucion.destroy();
         }
         
+        if (!historialCostos || historialCostos.length === 0) {
+            return;
+        }
+        
         this.charts.evolucion = new Chart(ctx, {
             type: 'line',
             data: {
@@ -267,6 +270,47 @@ class VisualizadorCalendario {
                 }
             }
         });
+    }
+    
+    // ========== UTILIDADES ==========
+    
+    generarColores(n) {
+        if (n <= 0) return [];
+        
+        const colores = [];
+        const hueStep = 360 / n;
+        
+        for (let i = 0; i < n; i++) {
+            const hue = i * hueStep;
+            colores.push(`hsl(${hue}, 70%, 60%)`);
+        }
+        
+        return colores;
+    }
+    
+    generarColor(index) {
+        const colores = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6'];
+        return colores[index % colores.length];
+    }
+    
+    generarColorTransparente(index) {
+        const color = this.generarColor(index);
+        return color.replace('rgb', 'rgba').replace(')', ', 0.2)');
+    }
+    
+    // Actualizar gráficos con datos
+    actualizarGraficosConResultados(resultados) {
+        // Actualizar gráfico de costos
+        const costChartCtx = document.getElementById('costChart');
+        if (costChartCtx && resultados?.giras) {
+            const labels = resultados.giras.map((g, i) => `Eq ${i + 1}`);
+            const valores = resultados.giras.map(g => g.costoTotal);
+            
+            this.crearGraficoCostos(costChartCtx.getContext('2d'), {
+                labels,
+                valores
+            });
+        }
     }
 }
 
