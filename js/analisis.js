@@ -297,7 +297,7 @@ const estilosAnalisis = `
     }
     
     .complexity-value {
-        background-color: #e8f4fc;
+        background-color: #05080aff;
         padding: 0.25rem 0.75rem;
         border-radius: 20px;
         font-family: monospace;
